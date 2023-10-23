@@ -30,4 +30,8 @@ your mental health companion</string>
     <string name="answer1">Click For Answer</string>
     <string name="answerCard">Baik kok, tapi ya begitu deh</string>
     <string name="question2">Terry pernah dengar, pelangi nggak abadi. Tapi senyum kamu harus selalu abadi ya...</string>
+    <string name="contact">Contact : </string>
+    <string name="no_telp">No. Telp\t\t\t:</string>
+    <string name="instagram">Instagram\t:</string>
+    <string name="tahun_karir">tahun karir</string>
 </resources>

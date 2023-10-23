@@ -9,4 +9,5 @@
     <style name="buttonstyle1" parent="Theme.AppCompat.Light">
         <item name="colorButtonNormal">@color/white</item>
     </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight"/>
 </resources>
