@@ -3,6 +3,7 @@ package com.example.ruo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -79,14 +81,29 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = passInput.getText().toString().trim();
 
                 if (username.isEmpty() || email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Silahkan Lengkapi Data Registrasi Akun", Toast.LENGTH_SHORT).show();
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
+                    builder
+                            .setMessage("Please Complete The Account Registration Data")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Registrasi Akun Berhasil", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
+                    builder
+                            .setMessage("Account Registration Successful")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .show();
                 }
-
-
             }
         });
     }

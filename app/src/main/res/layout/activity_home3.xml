@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:padding="20dp"
-            android:text="@string/answerCard" />
+            android:text="" />
 
 
     </com.google.android.material.card.MaterialCardView>
@@ -141,7 +141,7 @@
     </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/answer1"
+        android:id="@+id/answer2"
         style="?attr/textInputFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -167,13 +167,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:gravity="end"
-            android:padding="10dp"/>
+            android:gravity="end"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonSendAnswer2"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -184,7 +183,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.847"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/answer1"
+        app:layout_constraintTop_toBottomOf="@+id/answer2"
         app:layout_constraintVertical_bias="0.0" />
 
 
