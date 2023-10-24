@@ -1,6 +1,12 @@
 package com.example.ruo;
 
-public class MyListTherapyData {
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class MyListIndividuTherapyData {
+
 
     private int idTherapy;
     private int ImgPsikolog;
@@ -18,7 +24,10 @@ public class MyListTherapyData {
 
     private  int jumlahUnlike;
 
-    public MyListTherapyData(int idTherapy, int imgPsikolog, String nama, String pekerjaan, int lama_kerja, String no_telp, String instagram, int imgLike, int imgDislike, int jumlahLike, int jumlahUnlike) {
+    private int imgEdit;
+    private int imgDel;
+
+    public MyListIndividuTherapyData(int idTherapy,int imgEdit, int imgDel, int imgPsikolog, String nama, String pekerjaan, int lama_kerja, String no_telp, String instagram, int imgLike, int imgDislike, int jumlahLike, int jumlahUnlike) {
         ImgPsikolog = imgPsikolog;
         this.nama = nama;
         this.pekerjaan = pekerjaan;
@@ -28,6 +37,8 @@ public class MyListTherapyData {
         this.ImgLike = imgLike;
         this.ImgDislike = imgDislike;
         this.jumlahLike = jumlahLike;
+        this.imgEdit = imgEdit;
+        this.imgDel = imgDel;
         this.jumlahUnlike = jumlahUnlike;
         this.idTherapy = idTherapy;
     }
@@ -118,6 +129,22 @@ public class MyListTherapyData {
 
     public void setIdTherapy(int idTherapy) {
         this.idTherapy = idTherapy;
+    }
+
+    public int getIdImgEdit() {
+        return imgEdit;
+    }
+
+    public void setImgEdit(int imgEdit) {
+        this.imgEdit = imgEdit;
+    }
+
+    public int getImgDel() {
+        return imgDel;
+    }
+
+    public void setImgDel(int imgDel) {
+        this.imgDel = imgDel;
     }
 
 

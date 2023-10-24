@@ -1,5 +1,6 @@
 package com.example.ruo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,6 +25,26 @@ public class HomeActivity2 extends AppCompatActivity {
 
         MenuItem homeItem = bottomNavigationView.getMenu().findItem(R.id.item_home);
         homeItem.setChecked(true);
+
+        homeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent inten = new Intent(getApplicationContext(), HomeActivity1.class);
+                startActivity(inten);
+                return true;
+            }
+        });
+
+        MenuItem therapyItem = bottomNavigationView.getMenu().findItem(R.id.item_therapy);
+        therapyItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), TherapyActivity1.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                return true;
+            }
+        });
 
         TextInputLayout answer1Layout = findViewById(R.id.answer1);
         TextInputEditText answer1Input = (TextInputEditText) answer1Layout.getEditText();
