@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -61,6 +64,15 @@ public class TherapyActivity2 extends AppCompatActivity {
 
         myAdapterIndividuTherapy = new MyAdapterIndividuTherapy(getApplicationContext(), myListIndividuTherapyData);
         recyclerView.setAdapter(myAdapterIndividuTherapy);
+
+        ImageView btnToAddTherapy = findViewById(R.id.btnToAddTherapy);
+        btnToAddTherapy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TherapyActivityAdd.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

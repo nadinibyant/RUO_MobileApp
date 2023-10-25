@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TherapyActivityAdd"
+    tools:context=".TherapyActivityEdit"
     android:background="@color/backgroundApp">
 
     <LinearLayout
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <ImageView
-        android:id="@+id/btnBackTherapyAdd"
+        android:id="@+id/btnBackEditTherapy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -82,6 +82,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -134,7 +136,7 @@
                             >
 
                             <ImageView
-                                android:id="@+id/fotoPsikolog"
+                                android:id="@+id/fotoPsikologEdit"
                                 android:layout_width="120dp"
                                 android:layout_height="120dp"
                                 android:background="@color/white"
@@ -144,7 +146,7 @@
                                 />
 
                             <Button
-                                android:id="@+id/buttonAddImageTherapy"
+                                android:id="@+id/buttonEditImageTherapy"
                                 style="@style/Widget.Material3.Button.ElevatedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -177,7 +179,7 @@
                                 android:paddingStart="10dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputNamaTherapy"
+                                android:id="@+id/editNamaTherapy"
                                 style="?attr/textInputFilledStyle"
                                 android:layout_width="270dp"
                                 android:paddingStart="20dp"
@@ -218,7 +220,7 @@
                                 android:paddingStart="9dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputSpesialistTherapy"
+                                android:id="@+id/editSpesialistTherapy"
                                 style="?attr/textInputFilledStyle"
                                 android:layout_width="270dp"
                                 android:paddingStart="20dp"
@@ -258,7 +260,7 @@
                                 android:paddingStart="9dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputLamaKerjaTherapy"
+                                android:id="@+id/editLamaKerjaTherapy"
                                 style="?attr/textInputFilledStyle"
                                 android:layout_width="150dp"
                                 android:layout_height="wrap_content"
@@ -306,7 +308,7 @@
                                 android:paddingStart="9dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputNoTelpTherapy"
+                                android:id="@+id/editNoTelpTherapy"
                                 style="?attr/textInputFilledStyle"
                                 android:layout_width="270dp"
                                 android:paddingStart="20dp"
@@ -346,7 +348,7 @@
                                 android:paddingStart="9dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputInstagramTherapy"
+                                android:id="@+id/editInstagramTherapy"
                                 style="?attr/textInputFilledStyle"
                                 android:layout_width="270dp"
                                 android:paddingStart="20dp"
@@ -382,7 +384,7 @@
                 android:paddingTop="15dp">
 
                 <Button
-                    android:id="@+id/btnAddDataTherapy"
+                    android:id="@+id/btnEditDataTherapy"
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -391,12 +393,7 @@
                     android:text="Save"
                     android:textColor="@color/black"/>
             </LinearLayout>
-
-
-
         </LinearLayout>
-
-
 
     </ScrollView>
 
