@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:checkable="true"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         app:cardCornerRadius="20dp"
         android:theme="@style/Theme.MaterialComponents.Light"

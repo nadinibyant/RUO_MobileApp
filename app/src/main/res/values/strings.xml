@@ -35,4 +35,9 @@ your mental health companion</string>
     <string name="instagram">Instagram\t:</string>
     <string name="tahun_karir">tahun karir</string>
     <string name="My_Therapy">My Therapy</string>
+    <string name="name">Name</string>
+    <string name="spesialist">Spesialist</string>
+    <string name="long_career">Long Career</string>
+    <string name="year_career">Tahun Karir</string>
+    <string name="noTelp">No Phone</string>
 </resources>
