@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/btnBackMyTherapy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"

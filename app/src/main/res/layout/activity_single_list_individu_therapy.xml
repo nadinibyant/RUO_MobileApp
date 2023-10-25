@@ -45,31 +45,31 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="15dp"
+                    android:layout_gravity="end"
+                    android:paddingEnd="15dp">
+
+                    <ImageView
+                        android:id="@+id/editTherapyIndividu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="15dp"
-                        android:layout_gravity="end"
-                        android:paddingEnd="15dp">
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/baseline_mode_edit_24"
+                        android:paddingEnd="10dp"
+                        android:tag=""/>
 
-                        <ImageView
-                            android:id="@+id/editTherapyIndividu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/baseline_mode_edit_24"
-                            android:paddingEnd="10dp"
-                            android:tag=""/>
-
-                        <ImageView
-                            android:id="@+id/deleteTherapyIndividu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/baseline_delete_24"
-                            android:paddingStart="10dp"
-                            android:tag=""/>
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/deleteTherapyIndividu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/baseline_delete_24"
+                        android:paddingStart="10dp"
+                        android:tag=""/>
+                </LinearLayout>
 
                     <TextView
                         android:id="@+id/namaIndividuTherapy"

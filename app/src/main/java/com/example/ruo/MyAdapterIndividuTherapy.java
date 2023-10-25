@@ -1,6 +1,7 @@
 package com.example.ruo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,16 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
     public void onBindViewHolder(@NonNull MyAdapterIndividuTherapy.ViewHolder holder, int position) {
         holder.imgPsikologIndividu.setImageResource(myListIndividuTherapyData[position].getImgPsikolog());
         holder.editTherapyIndividu.setTag(Integer.toString(myListIndividuTherapyData[position].getIdTherapy()));
+        holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int therapyId = (int) view.getTag();
+                Intent intent = new Intent(context, TherapyActivityEdit.class);
+                intent.putExtra("therapyId", therapyId);
+                context.startActivity(intent);
+            }
+        });
+
         holder.deleteTherapyIndividu.setTag(myListIndividuTherapyData[position].getIdTherapy());
         holder.namaIndividu.setText(myListIndividuTherapyData[position].getNama());
         holder.pekerjaanIndividu.setText(myListIndividuTherapyData[position].getPekerjaan());
