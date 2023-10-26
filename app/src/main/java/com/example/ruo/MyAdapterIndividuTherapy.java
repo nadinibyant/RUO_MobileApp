@@ -39,9 +39,12 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
         holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int therapyId = (int) view.getTag();
+                String therapyId = (String) view.getTag();
+                System.out.println("tag : " + therapyId);
+
                 Intent intent = new Intent(context, TherapyActivityEdit.class);
                 intent.putExtra("therapyId", therapyId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

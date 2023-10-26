@@ -1,11 +1,14 @@
 package com.example.ruo;
 
+import android.os.Parcelable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyListIndividuTherapyData {
+import java.io.Serializable;
+
+public class MyListIndividuTherapyData  implements Serializable {
 
 
     private int idTherapy;
