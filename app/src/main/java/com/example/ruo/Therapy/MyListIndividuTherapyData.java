@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Therapy;
 
 import android.os.Parcelable;
 import android.view.View;

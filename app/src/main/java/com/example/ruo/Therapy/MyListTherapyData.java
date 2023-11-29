@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Therapy;
 
 public class MyListTherapyData {
 

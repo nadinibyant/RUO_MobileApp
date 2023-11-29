@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Home;
 
 import static android.app.ProgressDialog.show;
 
@@ -12,8 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.ruo.R;
+import com.example.ruo.Therapy.TherapyActivity1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;

@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,19 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
 
+import com.example.ruo.R;
+import com.example.ruo.Therapy.TherapyActivity1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-public class HomeActivity2 extends AppCompatActivity {
+public class HomeActivity1 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home2);
+        setContentView(R.layout.activity_home1);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -46,22 +45,28 @@ public class HomeActivity2 extends AppCompatActivity {
             }
         });
 
-        TextInputLayout answer1Layout = findViewById(R.id.answer1);
-        TextInputEditText answer1Input = (TextInputEditText) answer1Layout.getEditText();
+//        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+//        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+//                Intent intent = new Intent(getApplicationContext(), )
+//                return false;
+//            }
+//        })
 
-        Button btnSendAnswer1 = findViewById(R.id.buttonSendAnswer1);
-        btnSendAnswer1.setOnClickListener(new View.OnClickListener() {
+        ImageView btnNext = findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String answer1 = answer1Input.getText().toString().trim();
-                if (answer1.isEmpty()){
-                    Toast.makeText(HomeActivity2.this, "Silahkan Jawab Pertanyaan Terlebih Dahulu", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity3.class);
-                    intent.putExtra("answer1", answer1);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getApplicationContext(), HomeActivity2.class);
+                startActivity(intent);
             }
         });
+
+
+
+
     }
+
+
 }

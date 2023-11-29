@@ -15,13 +15,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.ruo.API.APIUser;
+import com.example.ruo.ForgotPassword.ForgotPasswordActivity;
+import com.example.ruo.pojo.RegisterResponse;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegisterActivity extends AppCompatActivity {
+
+    APIUser apiuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +85,6 @@ public class RegisterActivity extends AppCompatActivity {
         TextInputLayout passLayout = findViewById(R.id.passwordRegister);
         TextInputEditText passInput = (TextInputEditText) passLayout.getEditText();
 
-
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,17 +104,70 @@ public class RegisterActivity extends AppCompatActivity {
                             })
                             .show();
                 } else {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
-                    builder
-                            .setMessage("Account Registration Successful")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
+                    apiuser = APIClient.getClient().create(APIUser.class);
+                    Call<RegisterResponse> call = apiuser.getRegistResp(username = username, email = email, password = password);
+                    call.enqueue(new Callback<RegisterResponse>() {
+                        @Override
+                        public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                            if (response.isSuccessful()){
+                                RegisterResponse registerResponse = response.body();
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
+                                builder
+                                        .setMessage(registerResponse.getMessage())
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .show();
+                            } else {
+                                // mengurai pesan JSON dari respons body
+                                JSONObject errorBody = null;
+                                try {
+                                    errorBody = new JSONObject(response.errorBody().string());
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
                                 }
-                            })
-                            .show();
+                                String errorMessage = null;
+                                try {
+                                    errorMessage = errorBody.getString("message");
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
+                                builder
+                                        .setMessage(errorMessage)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // Tindakan yang diambil ketika tombol "OK" diklik
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(RegisterActivity.this);
+                            builder
+                                    .setMessage(t.getMessage())
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Tindakan yang diambil ketika tombol "OK" diklik
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
                 }
             }
         });

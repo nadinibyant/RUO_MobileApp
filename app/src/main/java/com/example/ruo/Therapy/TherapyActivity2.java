@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Therapy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.ruo.Home.HomeActivity1;
+import com.example.ruo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TherapyActivity2 extends AppCompatActivity {

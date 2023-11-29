@@ -3,25 +3,42 @@ package com.example.ruo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.ruo.API.APIUser;
+import com.example.ruo.ForgotPassword.ForgotPasswordActivity;
+import com.example.ruo.Home.HomeActivity1;
+import com.example.ruo.pojo.LoginResponse;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
+
+    APIUser apiuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,17 +117,84 @@ public class LoginActivity extends AppCompatActivity {
                             })
                             .show();
                 } else {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LoginActivity.this);
-                    builder
-                            .setMessage("Login Success")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity1.class);
-                                    startActivity(intent);
+                    apiuser = APIClient.getClient().create(APIUser.class);
+                    Call<LoginResponse> call = apiuser.getLoginResp(username = username, password = password);
+                    call.enqueue(new Callback<LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                            if (response.isSuccessful() == true) {
+                                LoginResponse loginResponse = response.body();
+
+                                SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("ACCESS_TOKEN_SECRET", loginResponse.getToken());
+                                editor.putInt("id_user", loginResponse.getIdUser());
+                                editor.apply();
+
+
+
+                                String authToken = sharedPref.getString("ACCESS_TOKEN_SECRET", null);
+                                Log.d("TAG", "token login " + authToken);
+
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LoginActivity.this);
+                                builder
+                                        .setMessage(loginResponse.getMessage())
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(getApplicationContext(), HomeActivity1.class);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .show();
+                            } else {
+                                    // mengurai pesan JSON dari respons body
+                                JSONObject errorBody = null;
+                                try {
+                                    errorBody = new JSONObject(response.errorBody().string());
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
                                 }
-                            })
-                            .show();
+                                String errorMessage = null;
+                                try {
+                                    errorMessage = errorBody.getString("message");
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LoginActivity.this);
+                                    builder
+                                            .setMessage(errorMessage)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // Tindakan yang diambil ketika tombol "OK" diklik
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                            .show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(LoginActivity.this);
+                            builder
+                                    .setMessage(t.getMessage())
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Tindakan yang diambil ketika tombol "OK" diklik
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                        }
+                    });
                 }
             }
         });

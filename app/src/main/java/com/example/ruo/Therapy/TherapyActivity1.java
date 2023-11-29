@@ -1,4 +1,4 @@
-package com.example.ruo;
+package com.example.ruo.Therapy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +9,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.ruo.Home.HomeActivity1;
+import com.example.ruo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TherapyActivity1 extends AppCompatActivity {
