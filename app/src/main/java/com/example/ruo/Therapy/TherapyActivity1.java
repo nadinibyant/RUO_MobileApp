@@ -5,21 +5,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.ruo.API.APITherapy;
+import com.example.ruo.APIClient;
 import com.example.ruo.Home.HomeActivity1;
+import com.example.ruo.Home.HomeActivity2;
+import com.example.ruo.Home.HomeActivity3;
+import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.pojo.Therapy.AllTherapyItem;
+import com.example.ruo.pojo.Therapy.AllTherapyResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TherapyActivity1 extends AppCompatActivity {
+
+    APITherapy apiTherapy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +97,107 @@ public class TherapyActivity1 extends AppCompatActivity {
         textMyTherapy.setMovementMethod(LinkMovementMethod.getInstance());
 
         RecyclerView recyclerView = findViewById(R.id.rv_listTherapy);
-        MyAdapterTherapy adapterTherapy;
+        final MyAdapterTherapy[] adapterTherapy = new MyAdapterTherapy[1];
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        MyListTherapyData[] therapyData = new MyListTherapyData[]{
-                new MyListTherapyData(1,R.drawable.psikolog, "dr. Nadini Annisa, Sp.KJ", "Spesialis Kesehatan Jiwa", 5, "082283426568", "@dinibynt", R.drawable.like, R.drawable.unlike, 100, 5),
-                new MyListTherapyData(2,R.drawable.psikolog, "dr. Darma Zidane, Sp.KJ", "Spesialis Kesehatan Jiwa", 7, "082286568", "@dzin16", R.drawable.like, R.drawable.unlike, 50, 1),
-                new MyListTherapyData(3,R.drawable.psikolog, "dr. Amalia Sandi, Sp.KJ", "Spesialis Kesehatan Jiwa", 5, "082283426568", "@amalia", R.drawable.like, R.drawable.unlike, 120, 9),
-                new MyListTherapyData(4,R.drawable.psikolog, "dr. Amalia Sandi, Sp.KJ", "Spesialis Kesehatan Jiwa", 5, "082283426568", "@amalia", R.drawable.like, R.drawable.unlike, 120, 9),
-                new MyListTherapyData(5,R.drawable.psikolog, "dr. Amalia Sandi, Sp.KJ", "Spesialis Kesehatan Jiwa", 5, "082283426568", "@amalia", R.drawable.like, R.drawable.unlike, 120, 9),
-                new MyListTherapyData(6,R.drawable.psikolog, "dr. Amalia Sandi, Sp.KJ", "Spesialis Kesehatan Jiwa", 5, "082283426568", "@amalia", R.drawable.like, R.drawable.unlike, 120, 9)
+        apiTherapy = APIClient.getClient().create(APITherapy.class);
+        SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
+        String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
 
-        };
+        if (authToken != null) {
+            Call<AllTherapyResponse> call = apiTherapy.getAllTherapyResp(authToken);
+            call.enqueue(new Callback<AllTherapyResponse>() {
+                @Override
+                public void onResponse(Call<AllTherapyResponse> call, Response<AllTherapyResponse> response) {
+                    if (response.isSuccessful()){
+                        List<AllTherapyItem> allTherapyItems = response.body().getAllTherapy();
+                        if (allTherapyItems.size() > 0 && allTherapyItems != null){
 
-        adapterTherapy = new MyAdapterTherapy(getApplicationContext(), therapyData);
-        recyclerView.setAdapter(adapterTherapy);
+                            ArrayList<AllTherapyItem> therapyDataList = new ArrayList<>();
+
+                            for (int i = 0; i < response.body().getAllTherapy().size(); i++) {
+                                AllTherapyItem therapyData = new AllTherapyItem (
+                                        allTherapyItems.get(i).getIdTherapy(),
+                                        allTherapyItems.get(i).getFotoPsikolog(),
+                                        allTherapyItems.get(i).getLamaKarir(),
+                                        allTherapyItems.get(i).getNamaPsikolog(),
+                                        allTherapyItems.get(i).getSpesialisPsikolog(),
+                                        allTherapyItems.get(i).getNoTelpPsikolog(),
+                                        allTherapyItems.get(i).getMedsosPsikolog(),
+                                        R.drawable.like,
+                                        R.drawable.unlike,
+                                        allTherapyItems.get(i).getLike(),
+                                        allTherapyItems.get(i).getDislike()
+                                );
+
+                                // Tambah ke ArrayList
+                                therapyDataList.add(therapyData);
+
+                            }
+
+                            // Buat adapter
+                            MyAdapterTherapy adapterTherapy = new MyAdapterTherapy(getApplicationContext(), therapyDataList);
+
+                            // Set adapter ke RecyclerView
+                            recyclerView.setAdapter(adapterTherapy);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        // JSON dari respons body
+                        JSONObject errorBody = null;
+                        try {
+                            errorBody = new JSONObject(response.errorBody().string());
+                            Log.d("TAG","" + errorBody);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        String errorMessage = null;
+                        try {
+                            errorMessage = errorBody.getString("message");
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TherapyActivity1.this);
+                        builder
+                                .setMessage(errorMessage)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Tindakan yang diambil ketika tombol "OK" diklik
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<AllTherapyResponse> call, Throwable t) {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TherapyActivity1.this);
+                    builder
+                            .setMessage(t.getMessage())
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Tindakan yang diambil ketika tombol "OK" diklik
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            });
+        } else {
+            Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent1);
+        }
+
     }
 }

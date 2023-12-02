@@ -1,5 +1,6 @@
 package com.example.ruo.API;
 
+import com.example.ruo.pojo.ForgetPassResponse;
 import com.example.ruo.pojo.LoginResponse;
 import com.example.ruo.pojo.RegisterResponse;
 
@@ -19,4 +20,9 @@ public interface APIUser {
     @POST("register")
     Call<RegisterResponse> getRegistResp(@Field("username") String username, @Field("email") String email, @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("forgetPass")
+    Call<ForgetPassResponse> getForgetPassResp(@Field("email") String email,
+                                               @Field("newPass") String newPass,
+                                               @Field("confNewPass") String confNewPass);
 }

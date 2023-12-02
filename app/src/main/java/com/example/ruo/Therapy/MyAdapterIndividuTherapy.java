@@ -2,6 +2,7 @@ package com.example.ruo.Therapy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ruo.R;
+import com.example.ruo.pojo.Therapy.MyTherapyItem;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndividuTherapy.ViewHolder> {
 
     Context context;
 
-    public MyListIndividuTherapyData[] myListIndividuTherapyData;
+    public MyTherapyItem[] myTherapyItems;
 
-    public MyAdapterIndividuTherapy(Context context, MyListIndividuTherapyData[] myListIndividuTherapyData){
+    public MyAdapterIndividuTherapy(Context context, ArrayList<MyTherapyItem> myTherapyItems){
         this.context = context;
-        this.myListIndividuTherapyData = myListIndividuTherapyData;
+        this.myTherapyItems = myTherapyItems.toArray(new MyTherapyItem[0]);
     }
 
     @NonNull
@@ -33,39 +38,79 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapterIndividuTherapy.ViewHolder holder, int position) {
-        holder.imgPsikologIndividu.setImageResource(myListIndividuTherapyData[position].getImgPsikolog());
-        holder.editTherapyIndividu.setTag(Integer.toString(myListIndividuTherapyData[position].getIdTherapy()));
+        String fotoPsikolog = myTherapyItems[position].getFotoPsikolog();
+        int indexOfDot = fotoPsikolog.lastIndexOf(".");
+
+        if (indexOfDot != -1) {
+            // Jika titik (.) ditemukan dalam nama file, ambil substring sebelum titik
+            String namaFileTanpaEkstensi = fotoPsikolog.substring(0, indexOfDot);
+
+            int drawableResourceId = holder.itemView.getContext().getResources().getIdentifier(
+                    namaFileTanpaEkstensi, "drawable", holder.itemView.getContext().getPackageName());
+
+            Picasso.get().load(drawableResourceId).into(holder.imgPsikologIndividu);
+
+        } else {
+            Log.d("Tag gagal", "onBindViewHolder: gagal");
+        }
+        holder.editTherapyIndividu.setTag(myTherapyItems[position].getIdTherapy());
         holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String therapyId = (String) view.getTag();
-                System.out.println("tag : " + therapyId);
-
                 Intent intent = new Intent(context, TherapyActivityEdit.class);
                 intent.putExtra("therapyId", therapyId);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+
             }
         });
+        holder.deleteTherapyIndividu.setTag(myTherapyItems[position].getIdTherapy());
+        holder.namaIndividu.setText(myTherapyItems[position].getNamaPsikolog());
+        holder.pekerjaanIndividu.setText(myTherapyItems[position].getSpesialisPsikolog());
+        holder.lamaKerjaIndividu.setText(Integer.toString(myTherapyItems[position].getLamaKarir()));
+        holder.noTelpIndividu.setText(myTherapyItems[position].getNoTelpPsikolog());
+        holder.instagramIndividu.setText(myTherapyItems[position].getMedsosPsikolog());
+        holder.jumlahLikeIndividu.setText(Integer.toString(myTherapyItems[position].getLike()));
+        holder.jumlahUnlikeIndividu.setText(Integer.toString(myTherapyItems[position].getDislike()));
+        holder.editTherapyIndividu.setImageResource(myTherapyItems[position].getIdImgEdit());
+        holder.deleteTherapyIndividu.setImageResource(myTherapyItems[position].getImgDel());
+        holder.like.setImageResource(myTherapyItems[position].getImgLike());
+        holder.unlike.setImageResource(myTherapyItems[position].getImgDislike());
 
-        holder.deleteTherapyIndividu.setTag(myListIndividuTherapyData[position].getIdTherapy());
-        holder.namaIndividu.setText(myListIndividuTherapyData[position].getNama());
-        holder.pekerjaanIndividu.setText(myListIndividuTherapyData[position].getPekerjaan());
-        holder.lamaKerjaIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getLama_kerja()));
-        holder.noTelpIndividu.setText(myListIndividuTherapyData[position].getNo_telp());
-        holder.instagramIndividu.setText(myListIndividuTherapyData[position].getInstagram());
-        holder.jumlahLikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahLike()));
-        holder.jumlahUnlikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahUnlike()));
-        holder.editTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getIdImgEdit());
-        holder.deleteTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getImgDel());
-        holder.like.setImageResource(myListIndividuTherapyData[position].getImgLike());
-        holder.unlike.setImageResource(myListIndividuTherapyData[position].getImgDislike());
+//        holder.imgPsikologIndividu.setImageResource(myListIndividuTherapyData[position].getImgPsikolog());
+//        holder.editTherapyIndividu.setTag(Integer.toString(myListIndividuTherapyData[position].getIdTherapy()));
+//        holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String therapyId = (String) view.getTag();
+//                System.out.println("tag : " + therapyId);
+//
+//                Intent intent = new Intent(context, TherapyActivityEdit.class);
+//                intent.putExtra("therapyId", therapyId);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+//            }
+//        });
+//
+//        holder.deleteTherapyIndividu.setTag(myListIndividuTherapyData[position].getIdTherapy());
+//        holder.namaIndividu.setText(myListIndividuTherapyData[position].getNama());
+//        holder.pekerjaanIndividu.setText(myListIndividuTherapyData[position].getPekerjaan());
+//        holder.lamaKerjaIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getLama_kerja()));
+//        holder.noTelpIndividu.setText(myListIndividuTherapyData[position].getNo_telp());
+//        holder.instagramIndividu.setText(myListIndividuTherapyData[position].getInstagram());
+//        holder.jumlahLikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahLike()));
+//        holder.jumlahUnlikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahUnlike()));
+//        holder.editTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getIdImgEdit());
+//        holder.deleteTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getImgDel());
+//        holder.like.setImageResource(myListIndividuTherapyData[position].getImgLike());
+//        holder.unlike.setImageResource(myListIndividuTherapyData[position].getImgDislike());
 
     }
 
     @Override
     public int getItemCount() {
-        return myListIndividuTherapyData.length;
+        return myTherapyItems.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

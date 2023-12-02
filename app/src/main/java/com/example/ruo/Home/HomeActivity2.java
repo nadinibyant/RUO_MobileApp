@@ -12,12 +12,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.ruo.API.APIChatTerry;
 import com.example.ruo.APIClient;
+import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
 import com.example.ruo.Therapy.TherapyActivity1;
 import com.example.ruo.pojo.chatTerry.Answer1Response;
+import com.example.ruo.pojo.chatTerry.QuestionItem;
+import com.example.ruo.pojo.chatTerry.QuestionResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,6 +73,68 @@ public class HomeActivity2 extends AppCompatActivity {
         TextInputLayout answer1Layout = findViewById(R.id.answer1);
         TextInputEditText answer1Input = (TextInputEditText) answer1Layout.getEditText();
 
+        apichatterry = APIClient.getClient().create(APIChatTerry.class);
+        SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
+        String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
+
+        if (authToken != null) {
+            Call<QuestionResponse> call = apichatterry.getQuestResp(authToken);
+            call.enqueue(new Callback<QuestionResponse>() {
+                @Override
+                public void onResponse(Call<QuestionResponse> call, Response<QuestionResponse> response) {
+                    if (response.isSuccessful()){
+                        List<QuestionItem> questionItems = response.body().getQuestion();
+
+                        if (questionItems != null && questionItems.size() > 0){
+                            String question = questionItems.get(0).getPertanyaan();
+                            TextView textView6 = findViewById(R.id.textView6);
+                            textView6.setText(question);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        // JSON dari respons body
+                        JSONObject errorBody = null;
+                        try {
+                            errorBody = new JSONObject(response.errorBody().string());
+                            Log.d("TAG","" + errorBody);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        String errorMessage = null;
+                        try {
+                            errorMessage = errorBody.getString("message");
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(HomeActivity2.this);
+                        builder
+                                .setMessage(errorMessage)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Tindakan yang diambil ketika tombol "OK" diklik
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<QuestionResponse> call, Throwable t) {
+
+                }
+            });
+        } else {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
+
         Button btnSendAnswer1 = findViewById(R.id.buttonSendAnswer1);
         btnSendAnswer1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,11 +153,8 @@ public class HomeActivity2 extends AppCompatActivity {
                                         })
                                         .show();
                 } else {
-                    apichatterry = APIClient.getClient().create(APIChatTerry.class);
-                    SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
-                    String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
                     Integer id_user = sharedPref.getInt("id_user", 0);
-
+                    if (authToken != null){
                         Call<Answer1Response> call = apichatterry.getAnswer1Resp(authToken, answer1, id_user);
                         String finalAnswer = answer1;
                         call.enqueue(new Callback<Answer1Response>() {
@@ -147,6 +211,11 @@ public class HomeActivity2 extends AppCompatActivity {
                                         .show();
                             }
                         });
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
+
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.example.ruo.Therapy;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ruo.R;
+import com.example.ruo.pojo.Therapy.AllTherapyItem;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.ViewHolder> {
 
     Context context;
-    public  MyListTherapyData[] therapyData;
+    public AllTherapyItem[] therapyData;
 
-    public MyAdapterTherapy(Context applicationContext, MyListTherapyData[] therapyData) {
+    public MyAdapterTherapy(Context applicationContext, ArrayList<AllTherapyItem> therapyData) {
         this.context = applicationContext;
-        this.therapyData = therapyData;
+        this.therapyData = therapyData.toArray(new AllTherapyItem[0]);
     }
 
 
@@ -34,16 +39,31 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
     @Override
 //    nge set nilai per tag xml nya, dan ambil data dari MylisttherapyData
     public void onBindViewHolder(@NonNull MyAdapterTherapy.ViewHolder holder, int position) {
-        holder.imgPsikolog.setImageResource(therapyData[position].getImgPsikolog());
-        holder.nama.setText(therapyData[position].getNama());
-        holder.pekerjaan.setText(therapyData[position].getPekerjaan());
-        holder.lama_kerja.setText(Integer.toString(therapyData[position].getLama_kerja()));
-        holder.no_telp.setText(therapyData[position].getNo_telp());
-        holder.instagram.setText(therapyData[position].getInstagram());
+        String fotoPsikolog = therapyData[position].getFotoPsikolog();
+        int indexOfDot = fotoPsikolog.lastIndexOf(".");
+
+        if (indexOfDot != -1) {
+            // Jika titik (.) ditemukan dalam nama file, ambil substring sebelum titik
+            String namaFileTanpaEkstensi = fotoPsikolog.substring(0, indexOfDot);
+
+            int drawableResourceId = holder.itemView.getContext().getResources().getIdentifier(
+                    namaFileTanpaEkstensi, "drawable", holder.itemView.getContext().getPackageName());
+
+            Picasso.get().load(drawableResourceId).into(holder.imgPsikolog);
+
+        } else {
+            Log.d("Tag gagal", "onBindViewHolder: gagal");
+        }
+
+        holder.nama.setText(therapyData[position].getNamaPsikolog());
+        holder.pekerjaan.setText(therapyData[position].getSpesialisPsikolog());
+        holder.lama_kerja.setText(Integer.toString(therapyData[position].getLamaKarir()));
+        holder.instagram.setText(therapyData[position].getMedsosPsikolog());
+        holder.no_telp.setText(therapyData[position].getNoTelpPsikolog());
         holder.imgLike.setImageResource(therapyData[position].getImgLike());
         holder.imgDislike.setImageResource(therapyData[position].getImgDislike());
-        holder.jumlahLike.setText(Integer.toString(therapyData[position].getJumlahLike()));
-        holder.jumlahUnlike.setText(Integer.toString(therapyData[position].getJumlahUnlike()));
+        holder.jumlahLike.setText(Integer.toString(therapyData[position].getLike()));
+        holder.jumlahUnlike.setText(Integer.toString(therapyData[position].getDislike()));
     }
 
     @Override
