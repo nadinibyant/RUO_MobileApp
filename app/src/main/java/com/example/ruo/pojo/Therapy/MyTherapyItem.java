@@ -46,7 +46,7 @@ public class MyTherapyItem{
 	private int ImgLike;
 	private int ImgDislike;
 
-	public MyTherapyItem(int idTherapy, int imgEdit, int imgDel, String fotoPsikolog, String namaPsikolog, String spesialisPsikolog, int lamaKarir, String noTelpPsikolog, int imgLike, int imgDislike, int jumlahLike, int jumlahDislike) {
+	public MyTherapyItem(int idTherapy, int imgEdit, int imgDel, String fotoPsikolog, String namaPsikolog, String spesialisPsikolog, int lamaKarir, String noTelpPsikolog, String medsosPsikolog, int imgLike, int imgDislike, int jumlahLike, int jumlahDislike) {
 		this.idTherapy = idTherapy;
 		this.imgEdit = imgEdit;
 		this.imgDel = imgDel;

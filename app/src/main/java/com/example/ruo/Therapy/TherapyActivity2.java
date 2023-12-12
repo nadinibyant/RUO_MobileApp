@@ -101,6 +101,7 @@ public class TherapyActivity2 extends AppCompatActivity {
                                         myTherapyItems.get(i).getSpesialisPsikolog(),
                                         myTherapyItems.get(i).getLamaKarir(),
                                         myTherapyItems.get(i).getNoTelpPsikolog(),
+                                        myTherapyItems.get(i).getMedsosPsikolog(),
                                         R.drawable.like,
                                         R.drawable.unlike,
                                         myTherapyItems.get(i).getLike(),

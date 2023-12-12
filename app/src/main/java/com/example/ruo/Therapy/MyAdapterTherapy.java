@@ -40,19 +40,16 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
 //    nge set nilai per tag xml nya, dan ambil data dari MylisttherapyData
     public void onBindViewHolder(@NonNull MyAdapterTherapy.ViewHolder holder, int position) {
         String fotoPsikolog = therapyData[position].getFotoPsikolog();
-        int indexOfDot = fotoPsikolog.lastIndexOf(".");
 
-        if (indexOfDot != -1) {
-            // Jika titik (.) ditemukan dalam nama file, ambil substring sebelum titik
-            String namaFileTanpaEkstensi = fotoPsikolog.substring(0, indexOfDot);
-
-            int drawableResourceId = holder.itemView.getContext().getResources().getIdentifier(
-                    namaFileTanpaEkstensi, "drawable", holder.itemView.getContext().getPackageName());
-
-            Picasso.get().load(drawableResourceId).into(holder.imgPsikolog);
-
+        // Periksa apakah fotoPsikolog adalah URL langsung atau hanya nama file
+        if (fotoPsikolog.startsWith("http")) {
+            Picasso.get().load(fotoPsikolog).into(holder.imgPsikolog);
         } else {
-            Log.d("Tag gagal", "onBindViewHolder: gagal");
+            // Jika fotoPsikolog adalah nama file,  URL dari server
+            String baseUrl = "http://10.0.2.2:3000";
+            String photoUrl = baseUrl + "/fotoPsikolog/" + fotoPsikolog;
+            Log.d("TAG url foto", "onBindViewHolder: " + photoUrl);
+            Picasso.get().load(photoUrl).into(holder.imgPsikolog);
         }
 
         holder.nama.setText(therapyData[position].getNamaPsikolog());

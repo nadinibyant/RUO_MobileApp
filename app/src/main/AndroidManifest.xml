@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo_ruo"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:roundIcon="@drawable/logo_ruo"
         android:supportsRtl="true"

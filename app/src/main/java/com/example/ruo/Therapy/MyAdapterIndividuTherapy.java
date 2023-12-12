@@ -41,17 +41,15 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
         String fotoPsikolog = myTherapyItems[position].getFotoPsikolog();
         int indexOfDot = fotoPsikolog.lastIndexOf(".");
 
-        if (indexOfDot != -1) {
-            // Jika titik (.) ditemukan dalam nama file, ambil substring sebelum titik
-            String namaFileTanpaEkstensi = fotoPsikolog.substring(0, indexOfDot);
-
-            int drawableResourceId = holder.itemView.getContext().getResources().getIdentifier(
-                    namaFileTanpaEkstensi, "drawable", holder.itemView.getContext().getPackageName());
-
-            Picasso.get().load(drawableResourceId).into(holder.imgPsikologIndividu);
-
+        // Periksa apakah fotoPsikolog adalah URL langsung atau hanya nama file
+        if (fotoPsikolog.startsWith("http")) {
+            Picasso.get().load(fotoPsikolog).into(holder.imgPsikologIndividu);
         } else {
-            Log.d("Tag gagal", "onBindViewHolder: gagal");
+            // Jika fotoPsikolog adalah nama file,  URL dari server
+            String baseUrl = "http://10.0.2.2:3000";
+            String photoUrl = baseUrl + "/fotoPsikolog/" + fotoPsikolog;
+            Log.d("TAG url foto", "onBindViewHolder: " + photoUrl);
+            Picasso.get().load(photoUrl).into(holder.imgPsikologIndividu);
         }
         holder.editTherapyIndividu.setTag(myTherapyItems[position].getIdTherapy());
         holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
@@ -77,35 +75,6 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
         holder.deleteTherapyIndividu.setImageResource(myTherapyItems[position].getImgDel());
         holder.like.setImageResource(myTherapyItems[position].getImgLike());
         holder.unlike.setImageResource(myTherapyItems[position].getImgDislike());
-
-//        holder.imgPsikologIndividu.setImageResource(myListIndividuTherapyData[position].getImgPsikolog());
-//        holder.editTherapyIndividu.setTag(Integer.toString(myListIndividuTherapyData[position].getIdTherapy()));
-//        holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String therapyId = (String) view.getTag();
-//                System.out.println("tag : " + therapyId);
-//
-//                Intent intent = new Intent(context, TherapyActivityEdit.class);
-//                intent.putExtra("therapyId", therapyId);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//            }
-//        });
-//
-//        holder.deleteTherapyIndividu.setTag(myListIndividuTherapyData[position].getIdTherapy());
-//        holder.namaIndividu.setText(myListIndividuTherapyData[position].getNama());
-//        holder.pekerjaanIndividu.setText(myListIndividuTherapyData[position].getPekerjaan());
-//        holder.lamaKerjaIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getLama_kerja()));
-//        holder.noTelpIndividu.setText(myListIndividuTherapyData[position].getNo_telp());
-//        holder.instagramIndividu.setText(myListIndividuTherapyData[position].getInstagram());
-//        holder.jumlahLikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahLike()));
-//        holder.jumlahUnlikeIndividu.setText(Integer.toString(myListIndividuTherapyData[position].getJumlahUnlike()));
-//        holder.editTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getIdImgEdit());
-//        holder.deleteTherapyIndividu.setImageResource(myListIndividuTherapyData[position].getImgDel());
-//        holder.like.setImageResource(myListIndividuTherapyData[position].getImgLike());
-//        holder.unlike.setImageResource(myListIndividuTherapyData[position].getImgDislike());
-
     }
 
     @Override

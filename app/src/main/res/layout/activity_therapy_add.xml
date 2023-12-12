@@ -151,7 +151,7 @@
                                 android:paddingStart="50dp"
                                 android:paddingEnd="50dp"
                                 android:text="Upload Image"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/black"/>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -274,6 +274,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:layout_marginLeft="10dp"
                                     android:inputType="text" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -342,7 +343,7 @@
                                 android:layout_weight="1"
                                 android:textSize="11dp"
                                 android:layout_gravity="center_vertical"
-                                android:text="Instagram"
+                                android:text="Media Sosial"
                                 android:paddingStart="9dp"/>
 
                             <com.google.android.material.textfield.TextInputLayout
