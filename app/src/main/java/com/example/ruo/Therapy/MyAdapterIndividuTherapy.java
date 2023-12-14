@@ -1,26 +1,45 @@
 package com.example.ruo.Therapy;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ruo.API.APITherapy;
+import com.example.ruo.APIClient;
+import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.pojo.Therapy.DeleteTherapyResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyItem;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndividuTherapy.ViewHolder> {
 
     Context context;
+
+    APITherapy apiTherapy;
 
     public MyTherapyItem[] myTherapyItems;
 
@@ -48,15 +67,14 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
             // Jika fotoPsikolog adalah nama file,  URL dari server
             String baseUrl = "http://10.0.2.2:3000";
             String photoUrl = baseUrl + "/fotoPsikolog/" + fotoPsikolog;
-            Log.d("TAG url foto", "onBindViewHolder: " + photoUrl);
-            Picasso.get().load(photoUrl).into(holder.imgPsikologIndividu);
+            Picasso.get().load(photoUrl).fit().into(holder.imgPsikologIndividu);
         }
         holder.editTherapyIndividu.setTag(myTherapyItems[position].getIdTherapy());
         holder.editTherapyIndividu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String therapyId = (String) view.getTag();
-                Intent intent = new Intent(context, TherapyActivityEdit.class);
+                int therapyId = (int) view.getTag();
+                Intent intent = new Intent(holder.itemView.getContext(), TherapyActivityEdit.class);
                 intent.putExtra("therapyId", therapyId);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -64,6 +82,50 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
             }
         });
         holder.deleteTherapyIndividu.setTag(myTherapyItems[position].getIdTherapy());
+        holder.deleteTherapyIndividu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int therapyId = (int) view.getTag();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Konfirmasi Hapus");
+                builder.setMessage("Apakah Anda yakin ingin menghapus therapy ini?");
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        apiTherapy = APIClient.getClient().create(APITherapy.class);
+                        SharedPreferences sharedPref = context.getSharedPreferences("env", Context.MODE_PRIVATE);
+                        String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
+                        Integer id_user = sharedPref.getInt("id_user", 0);
+
+                        if (authToken != null) {
+                            Call<DeleteTherapyResponse> call = apiTherapy.getDeleteTherapyResp(authToken, therapyId);
+                            call.enqueue(new Callback<DeleteTherapyResponse>() {
+                                @Override
+                                public void onResponse(Call<DeleteTherapyResponse> call, Response<DeleteTherapyResponse> response) {
+                                    if (response.isSuccessful()){
+                                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<DeleteTherapyResponse> call, Throwable t) {
+
+                                }
+                            });
+                        } else {
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            context.startActivity(intent);
+                        }
+                    }
+                });
+
+
+            }
+        });
         holder.namaIndividu.setText(myTherapyItems[position].getNamaPsikolog());
         holder.pekerjaanIndividu.setText(myTherapyItems[position].getSpesialisPsikolog());
         holder.lamaKerjaIndividu.setText(Integer.toString(myTherapyItems[position].getLamaKarir()));

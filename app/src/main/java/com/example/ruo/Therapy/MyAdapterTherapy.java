@@ -49,7 +49,7 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
             String baseUrl = "http://10.0.2.2:3000";
             String photoUrl = baseUrl + "/fotoPsikolog/" + fotoPsikolog;
             Log.d("TAG url foto", "onBindViewHolder: " + photoUrl);
-            Picasso.get().load(photoUrl).into(holder.imgPsikolog);
+            Picasso.get().load(photoUrl).fit().into(holder.imgPsikolog);
         }
 
         holder.nama.setText(therapyData[position].getNamaPsikolog());

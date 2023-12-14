@@ -88,17 +88,6 @@ public class TherapyActivityAdd extends AppCompatActivity {
         TextInputLayout instagramLayout = findViewById(R.id.inputInstagramTherapy);
         TextInputEditText instagramInput = (TextInputEditText) instagramLayout.getEditText();
 
-//        Button btnAddImage = findViewById(R.id.buttonAddImageTherapy);
-//        btnAddImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                intent.setType("image/*");
-//                startActivityForResult(intent,  PICK_IMAGE_REQUEST);
-//            }
-//        });
-
-
 
         Button btnAddImage = findViewById(R.id.buttonAddImageTherapy);
         btnAddImage.setOnClickListener(new View.OnClickListener() {
@@ -199,42 +188,59 @@ public class TherapyActivityAdd extends AppCompatActivity {
                     String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
                     Integer id_user = sharedPref.getInt("id_user", 0);
 
-                    Call<AddTherapyResponse> call = apiTherapy.getAddTherapyResp(authToken, id_user, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis );
-                    call.enqueue(new Callback<AddTherapyResponse>() {
-                        @Override
-                        public void onResponse(Call<AddTherapyResponse> call, Response<AddTherapyResponse> response) {
-                            if (response.isSuccessful()){
-                                MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
-                                materialAlertDialogBuilder
-                                        .setMessage(response.body().getMessage())
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                Intent intent = new Intent(getApplicationContext(), TherapyActivity2.class);
-                                                startActivity(intent);
-                                }
-                            }).show();
-                            } else {
-                                // JSON dari respons body
-                                JSONObject errorBody = null;
-                                try {
-                                    errorBody = new JSONObject(response.errorBody().string());
-                                    Log.d("TAG","" + errorBody);
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                String errorMessage = null;
-                                try {
-                                    errorMessage = errorBody.getString("message");
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
+                    if(authToken != null) {
+                        Call<AddTherapyResponse> call = apiTherapy.getAddTherapyResp(authToken, id_user, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis );
+                        call.enqueue(new Callback<AddTherapyResponse>() {
+                            @Override
+                            public void onResponse(Call<AddTherapyResponse> call, Response<AddTherapyResponse> response) {
+                                if (response.isSuccessful()){
+                                    MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
+                                    materialAlertDialogBuilder
+                                            .setMessage(response.body().getMessage())
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    Intent intent = new Intent(getApplicationContext(), TherapyActivity2.class);
+                                                    startActivity(intent);
+                                                }
+                                            }).show();
+                                } else {
+                                    // JSON dari respons body
+                                    JSONObject errorBody = null;
+                                    try {
+                                        errorBody = new JSONObject(response.errorBody().string());
+                                        Log.d("TAG","" + errorBody);
+                                    } catch (JSONException e) {
+                                        throw new RuntimeException(e);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    String errorMessage = null;
+                                    try {
+                                        errorMessage = errorBody.getString("message");
+                                    } catch (JSONException e) {
+                                        throw new RuntimeException(e);
+                                    }
 
+                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
+                                    builder
+                                            .setMessage(errorMessage)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // Tindakan yang diambil ketika tombol "OK" diklik
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<AddTherapyResponse> call, Throwable t) {
                                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
                                 builder
-                                        .setMessage(errorMessage)
+                                        .setMessage(t.getMessage())
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -243,25 +249,15 @@ public class TherapyActivityAdd extends AppCompatActivity {
                                             }
                                         })
                                         .show();
+
                             }
-                        }
+                        });
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
 
-                        @Override
-                        public void onFailure(Call<AddTherapyResponse> call, Throwable t) {
-                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
-                            builder
-                                    .setMessage(t.getMessage())
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // Tindakan yang diambil ketika tombol "OK" diklik
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
 
-                        }
-                    });
                 }
             }
         });

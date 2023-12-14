@@ -127,7 +127,17 @@ public class HomeActivity2 extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<QuestionResponse> call, Throwable t) {
-
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(HomeActivity2.this);
+                    builder
+                            .setMessage(t.getMessage())
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Tindakan yang diambil ketika tombol "OK" diklik
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
                 }
             });
         } else {

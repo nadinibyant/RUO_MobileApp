@@ -31,8 +31,8 @@
 
                 <ImageView
                     android:id="@+id/imgPsikolog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="150dp"
+                    android:layout_height="180dp"
                     android:padding="20dp"
                     tools:srcCompat="@tools:sample/avatars" />
 

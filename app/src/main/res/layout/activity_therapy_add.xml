@@ -85,7 +85,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="650dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:layout_constraintVertical_bias="0.0"
