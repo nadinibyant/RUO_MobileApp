@@ -24,4 +24,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 3000); // Jeda waktu dalam milidetik (3 detik)
     }
+
 }

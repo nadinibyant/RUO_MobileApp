@@ -1,10 +1,13 @@
 package com.example.ruo.Therapy;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ruo.API.APITherapy;
@@ -86,14 +90,6 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
             @Override
             public void onClick(View view) {
                 int therapyId = (int) view.getTag();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Konfirmasi Hapus");
-                builder.setMessage("Apakah Anda yakin ingin menghapus therapy ini?");
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
                         apiTherapy = APIClient.getClient().create(APITherapy.class);
                         SharedPreferences sharedPref = context.getSharedPreferences("env", Context.MODE_PRIVATE);
                         String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
@@ -104,7 +100,7 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
                             call.enqueue(new Callback<DeleteTherapyResponse>() {
                                 @Override
                                 public void onResponse(Call<DeleteTherapyResponse> call, Response<DeleteTherapyResponse> response) {
-                                    if (response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -113,17 +109,13 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
 
                                 @Override
                                 public void onFailure(Call<DeleteTherapyResponse> call, Throwable t) {
-
+                                    Log.e("API_CALL_ERROR", "API Call Failed", t);
                                 }
                             });
                         } else {
                             Intent intent = new Intent(context, LoginActivity.class);
                             context.startActivity(intent);
                         }
-                    }
-                });
-
-
             }
         });
         holder.namaIndividu.setText(myTherapyItems[position].getNamaPsikolog());
@@ -143,6 +135,14 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
     public int getItemCount() {
         return myTherapyItems.length;
     }
+
+//    public class StartGameDialogFragment extends DialogFragment {
+//        @Override
+//        public Dialog onCreateDialog(Bundle savedInstanceState) {
+//            // Use the Builder class for convenient dialog construction
+//
+//        }
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

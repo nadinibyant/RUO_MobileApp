@@ -191,6 +191,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
             }
         });
 
+
         Button btnEditTherapy = findViewById(R.id.btnEditDataTherapy);
         btnEditTherapy.setOnClickListener(new View.OnClickListener() {
             @Override

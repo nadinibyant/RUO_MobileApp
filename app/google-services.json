@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700007495162",
+    "project_id": "ruo-application",
+    "storage_bucket": "ruo-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700007495162:android:6da1d8d50de1f7198aa043",
+        "android_client_info": {
+          "package_name": "com.example.ruo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkUQRt3mPOMu8H7cnMmbKeFvxCB1S3ijk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

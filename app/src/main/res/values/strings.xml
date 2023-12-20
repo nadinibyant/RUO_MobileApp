@@ -40,4 +40,7 @@ your mental health companion</string>
     <string name="long_career">Long Career</string>
     <string name="year_career">Tahun Karir</string>
     <string name="noTelp">No Phone</string>
+    <string name="pesan_error">Apakah anda yakin untuk menghapus?</string>
+    <string name="start">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -2,16 +2,18 @@ package com.example.ruo.API;
 
 import com.example.ruo.pojo.Therapy.AddTherapyResponse;
 import com.example.ruo.pojo.Therapy.AllTherapyResponse;
+import com.example.ruo.pojo.Therapy.DelOtomatisResponse;
 import com.example.ruo.pojo.Therapy.DeleteTherapyResponse;
 import com.example.ruo.pojo.Therapy.DetailTherapyResponse;
+import com.example.ruo.pojo.Therapy.DislikeResponse;
 import com.example.ruo.pojo.Therapy.EditTherapyResponse;
+import com.example.ruo.pojo.Therapy.LikeResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -61,5 +63,16 @@ public interface APITherapy {
 
     @DELETE("deleteTherapy/{id_therapy}")
     Call<DeleteTherapyResponse> getDeleteTherapyResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy);
+
+    @POST("dislike/{id_therapy}/{id_user}")
+    Call<DislikeResponse> getDislikeResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy, @Path("id_user") Integer id_user);
+
+
+    @POST("like/{id_therapy}/{id_user}")
+    Call<LikeResponse> getLikeResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy, @Path("id_user") Integer id_user);
+
+    @DELETE("delOtomatic")
+    Call<DelOtomatisResponse> getDelOtomatisResp();
+
 
 }

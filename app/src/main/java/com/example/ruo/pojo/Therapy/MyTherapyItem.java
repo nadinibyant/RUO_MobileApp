@@ -10,10 +10,9 @@ public class MyTherapyItem{
 	@SerializedName("updated_at")
 	private String updatedAt;
 
-	@SerializedName("like")
+
 	private int like;
 
-	@SerializedName("dislike")
 	private int dislike;
 
 	@SerializedName("nama_psikolog")

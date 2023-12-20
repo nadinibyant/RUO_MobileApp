@@ -22,8 +22,6 @@ import android.widget.TextView;
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
 import com.example.ruo.Home.HomeActivity1;
-import com.example.ruo.Home.HomeActivity2;
-import com.example.ruo.Home.HomeActivity3;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
 import com.example.ruo.pojo.Therapy.AllTherapyItem;
@@ -106,6 +104,7 @@ public class TherapyActivity1 extends AppCompatActivity {
         String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
 
         if (authToken != null) {
+
             Call<AllTherapyResponse> call = apiTherapy.getAllTherapyResp(authToken);
             call.enqueue(new Callback<AllTherapyResponse>() {
                 @Override
