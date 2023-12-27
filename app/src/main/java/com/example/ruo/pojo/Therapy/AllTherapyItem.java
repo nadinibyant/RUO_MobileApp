@@ -40,10 +40,15 @@ public class AllTherapyItem{
 	@SerializedName("spesialis_psikolog")
 	private String spesialisPsikolog;
 
+	@SerializedName("alamat_lengkap")
+	private String alamat_lengkap;
+
 	private int ImgLike;
 	private int ImgDislike;
 
-	public AllTherapyItem(int idTherapy, String fotoPsikolog, int lamaKarir, String namaPsikolog, String spesialisPsikolog, String noTelpPsikolog, String medsosPsikolog, int imgLike, int imgDislike,  int like, int dislike) {
+	private int ImgAlamat;
+
+	public AllTherapyItem(int idTherapy, String fotoPsikolog, int lamaKarir, String namaPsikolog, String spesialisPsikolog, String noTelpPsikolog, String medsosPsikolog , int imgLike, int imgDislike, int like, int dislike, String alamat_lengkap, int imgAlamat) {
 
 		this.idTherapy = idTherapy;
 		this.fotoPsikolog = fotoPsikolog;
@@ -56,6 +61,8 @@ public class AllTherapyItem{
 		this.ImgDislike = imgDislike;
 		this.like = like;
 		this.dislike = dislike;
+		this.alamat_lengkap = alamat_lengkap;
+		this.ImgAlamat = imgAlamat;
 	}
 
 	public String getMedsosPsikolog(){
@@ -109,6 +116,12 @@ public class AllTherapyItem{
 	public int getImgLike() {return ImgLike;}
 
 	public int getImgDislike() {return ImgDislike;}
+
+	public String getAlamatLengkap(){
+		return alamat_lengkap;
+	}
+
+
 
 
 }

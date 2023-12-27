@@ -35,6 +35,10 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,6 +48,27 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        FirebaseApp.initializeApp(this);
+
+        apiuser = APIClient.getClient().create(APIUser.class);
+        SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String token = task.getResult();
+                        Log.d("Device Token", token);
+                        editor.putString("token_fcm", token);
+                        editor.apply();
+
+                    } else {
+                        Log.e("Token Retrieval Failed", "Error: " + task.getException());
+                    }
+                });
+
+
 
         TextView textForgotPass = findViewById(R.id.textForgotPass);
         SpannableString spannableString = new SpannableString(getString(R.string.forgotPassword));
@@ -117,20 +142,19 @@ public class LoginActivity extends AppCompatActivity {
                             })
                             .show();
                 } else {
-                    apiuser = APIClient.getClient().create(APIUser.class);
-                    Call<LoginResponse> call = apiuser.getLoginResp(username = username, password = password);
+
+                    String tokenFcm = sharedPref.getString("token_fcm", null);
+
+                    Call<LoginResponse> call = apiuser.getLoginResp(username, password, tokenFcm);
                     call.enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             if (response.isSuccessful() == true) {
                                 LoginResponse loginResponse = response.body();
 
-                                SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString("ACCESS_TOKEN_SECRET", loginResponse.getToken());
                                 editor.putInt("id_user", loginResponse.getIdUser());
                                 editor.apply();
-
 
 
                                 String authToken = sharedPref.getString("ACCESS_TOKEN_SECRET", null);

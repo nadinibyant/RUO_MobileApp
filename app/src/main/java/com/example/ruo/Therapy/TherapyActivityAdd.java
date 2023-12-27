@@ -88,6 +88,9 @@ public class TherapyActivityAdd extends AppCompatActivity {
         TextInputLayout instagramLayout = findViewById(R.id.inputInstagramTherapy);
         TextInputEditText instagramInput = (TextInputEditText) instagramLayout.getEditText();
 
+        TextInputLayout alamatLayout = findViewById(R.id.inputAlamatLengkapTherapy);
+        TextInputEditText alamatInput = (TextInputEditText) alamatLayout.getEditText();
+
 
         Button btnAddImage = findViewById(R.id.buttonAddImageTherapy);
         btnAddImage.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +123,7 @@ public class TherapyActivityAdd extends AppCompatActivity {
                 String lamaKerja = lamaKerjaInput.getText().toString().trim();
                 String noTelp = noTelpInput.getText().toString().trim();
                 String instagram = instagramInput.getText().toString().trim();
+                String alamat = alamatInput.getText().toString().trim();
 
                 if (name.isEmpty()){
                     MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
@@ -171,6 +175,16 @@ public class TherapyActivityAdd extends AppCompatActivity {
                                     dialogInterface.dismiss();
                                 }
                             }).show();
+                } else if (alamat.isEmpty()){
+                    MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(TherapyActivityAdd.this);
+                    materialAlertDialogBuilder
+                            .setMessage("Please Complete Your Address Data")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
                 } else {
                     File file = new File(imagePath);
                     Log.d("file", "onClick: " + file);
@@ -182,6 +196,7 @@ public class TherapyActivityAdd extends AppCompatActivity {
                     RequestBody request_no_telp = RequestBody.create(MediaType.parse("multipart/form-data"), noTelp);
                     RequestBody request_medsos = RequestBody.create(MediaType.parse("multipart/form-data"), instagram);
                     RequestBody request_spesialis = RequestBody.create(MediaType.parse("multipart/form-data"), spesialist);
+                    RequestBody request_alamat = RequestBody.create(MediaType.parse("multipart/form-data"), alamat);
 
                     apiTherapy = APIClient.getClient().create(APITherapy.class);
                     SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
@@ -189,7 +204,7 @@ public class TherapyActivityAdd extends AppCompatActivity {
                     Integer id_user = sharedPref.getInt("id_user", 0);
 
                     if(authToken != null) {
-                        Call<AddTherapyResponse> call = apiTherapy.getAddTherapyResp(authToken, id_user, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis );
+                        Call<AddTherapyResponse> call = apiTherapy.getAddTherapyResp(authToken, id_user, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis, request_alamat);
                         call.enqueue(new Callback<AddTherapyResponse>() {
                             @Override
                             public void onResponse(Call<AddTherapyResponse> call, Response<AddTherapyResponse> response) {

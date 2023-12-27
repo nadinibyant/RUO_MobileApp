@@ -24,6 +24,7 @@ import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.peta.petaView;
 import com.example.ruo.pojo.Therapy.DeleteTherapyResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyItem;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -101,9 +102,12 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
                                 @Override
                                 public void onResponse(Call<DeleteTherapyResponse> call, Response<DeleteTherapyResponse> response) {
                                     if (response.isSuccessful()) {
-                                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(view.getContext(), TherapyActivity2.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        view.getContext().startActivity(intent);
                                     } else {
-                                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -113,8 +117,8 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
                                 }
                             });
                         } else {
-                            Intent intent = new Intent(context, LoginActivity.class);
-                            context.startActivity(intent);
+                            Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                            view.getContext().startActivity(intent);
                         }
             }
         });
@@ -129,6 +133,18 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
         holder.deleteTherapyIndividu.setImageResource(myTherapyItems[position].getImgDel());
         holder.like.setImageResource(myTherapyItems[position].getImgLike());
         holder.unlike.setImageResource(myTherapyItems[position].getImgDislike());
+        holder.imgAlamat.setImageResource(R.drawable.baseline_location_on_24);
+        holder.imgAlamat.setTag(myTherapyItems[position].getIdTherapy());
+        holder.imgAlamat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int therapyId = (int) view.getTag();
+                Intent intent = new Intent(holder.itemView.getContext(), petaView.class);
+                intent.putExtra("therapyId", therapyId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -160,6 +176,8 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
         ImageView like;
 
         ImageView unlike;
+
+        ImageView imgAlamat;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -175,6 +193,7 @@ public class MyAdapterIndividuTherapy extends RecyclerView.Adapter<MyAdapterIndi
             jumlahUnlikeIndividu = itemView.findViewById(R.id.jumlah_unlike_individu);
             like = itemView.findViewById(R.id.imgLike_individu);
             unlike = itemView.findViewById(R.id.imgDislike_individu);
+            imgAlamat = itemView.findViewById(R.id.imgAlamat);
         }
     }
 }

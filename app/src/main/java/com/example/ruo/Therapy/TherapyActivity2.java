@@ -105,7 +105,9 @@ public class TherapyActivity2 extends AppCompatActivity {
                                         R.drawable.like,
                                         R.drawable.unlike,
                                         myTherapyItems.get(i).getLike(),
-                                        myTherapyItems.get(i).getDislike()
+                                        myTherapyItems.get(i).getDislike(),
+                                        myTherapyItems.get(i).getAlamatLengkap(),
+                                        R.drawable.baseline_location_on_24
                                 );
                                 // Tambah ke ArrayList
                                 myTherapyItemArrayList.add(myTherapyItem);

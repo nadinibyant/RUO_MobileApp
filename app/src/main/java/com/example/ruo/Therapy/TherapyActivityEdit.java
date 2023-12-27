@@ -86,6 +86,9 @@ public class TherapyActivityEdit extends AppCompatActivity {
         TextInputLayout instagramLayout = findViewById(R.id.editInstagramTherapy);
         TextInputEditText instagramInput = (TextInputEditText) instagramLayout.getEditText();
 
+        TextInputLayout alamatLayout = findViewById(R.id.inputAlamatLengkapTherapy);
+        TextInputEditText alamatInput = (TextInputEditText) alamatLayout.getEditText();
+
         ImageView fotoPsikologImg = findViewById(R.id.fotoPsikologEdit);
 
         Intent intent = getIntent();
@@ -108,6 +111,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
                             lamaKerjaInput.setText(Integer.toString(response.body().getDataTherapy().getLamaKarir()));
                             noTelpInput.setText(response.body().getDataTherapy().getNoTelpPsikolog());
                             instagramInput.setText(response.body().getDataTherapy().getMedsosPsikolog());
+                            alamatInput.setText(response.body().getDataTherapy().getAlamatLengkap());
                             String fotoPsikolog = response.body().getDataTherapy().getFotoPsikolog();
                             String baseUrl = "http://10.0.2.2:3000";
                             String photoUrl = baseUrl + "/fotoPsikolog/" + fotoPsikolog;
@@ -201,6 +205,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
                 String lamaKerja = lamaKerjaInput.getText().toString().trim();
                 String noTelp = noTelpInput.getText().toString().trim();
                 String instagram = instagramInput.getText().toString().trim();
+                String alamat = alamatInput.getText().toString().trim();
 
                 Intent intent = getIntent();
                 if (intent != null) {
@@ -216,6 +221,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
                     RequestBody request_no_telp = RequestBody.create(MediaType.parse("multipart/form-data"), noTelp);
                     RequestBody request_medsos = RequestBody.create(MediaType.parse("multipart/form-data"), instagram);
                     RequestBody request_spesialis = RequestBody.create(MediaType.parse("multipart/form-data"), spesialist);
+                    RequestBody request_alamat = RequestBody.create(MediaType.parse("multipart/form-data"), alamat);
 
                     apiTherapy = APIClient.getClient().create(APITherapy.class);
                     SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
@@ -224,7 +230,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
 
                     if (authToken != null){
                         if (userSelectedNewImage == true){
-                            Call<EditTherapyResponse> call = apiTherapy.getEditTherapyResp(authToken, therapyId, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis);
+                            Call<EditTherapyResponse> call = apiTherapy.getEditTherapyResp(authToken, therapyId, body, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis, request_alamat);
                             call.enqueue(new Callback<EditTherapyResponse>() {
                                 @Override
                                 public void onResponse(Call<EditTherapyResponse> call, Response<EditTherapyResponse> response) {
@@ -287,7 +293,7 @@ public class TherapyActivityEdit extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            Call<EditTherapyResponse> call = apiTherapy.getEditTherapyRespNo(authToken, therapyId, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis);
+                            Call<EditTherapyResponse> call = apiTherapy.getEditTherapyRespNo(authToken, therapyId, request_nama, request_lama_karir, request_no_telp, request_medsos, request_spesialis, request_alamat);
                             call.enqueue(new Callback<EditTherapyResponse>() {
                                 @Override
                                 public void onResponse(Call<EditTherapyResponse> call, Response<EditTherapyResponse> response) {

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
@@ -26,6 +27,7 @@ import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
 import com.example.ruo.pojo.Therapy.AllTherapyItem;
 import com.example.ruo.pojo.Therapy.AllTherapyResponse;
+import com.example.ruo.pojo.Therapy.FindLikeResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -102,8 +104,10 @@ public class TherapyActivity1 extends AppCompatActivity {
         apiTherapy = APIClient.getClient().create(APITherapy.class);
         SharedPreferences sharedPref = getSharedPreferences("env", Context.MODE_PRIVATE);
         String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
-
+        Integer id_user = sharedPref.getInt("id_user", 0);
+        Log.d("id user", "ini id user nya : " + id_user);
         if (authToken != null) {
+
 
             Call<AllTherapyResponse> call = apiTherapy.getAllTherapyResp(authToken);
             call.enqueue(new Callback<AllTherapyResponse>() {
@@ -112,10 +116,11 @@ public class TherapyActivity1 extends AppCompatActivity {
                     if (response.isSuccessful()){
                         List<AllTherapyItem> allTherapyItems = response.body().getAllTherapy();
                         if (allTherapyItems.size() > 0 && allTherapyItems != null){
-
                             ArrayList<AllTherapyItem> therapyDataList = new ArrayList<>();
+                            boolean[] imgLike = new boolean[allTherapyItems.size()];
 
                             for (int i = 0; i < response.body().getAllTherapy().size(); i++) {
+                                Call<FindLikeResponse> findLike = apiTherapy.getFindLikeResp(authToken, id_user, allTherapyItems.get(i).getIdTherapy());
                                 AllTherapyItem therapyData = new AllTherapyItem (
                                         allTherapyItems.get(i).getIdTherapy(),
                                         allTherapyItems.get(i).getFotoPsikolog(),
@@ -127,7 +132,9 @@ public class TherapyActivity1 extends AppCompatActivity {
                                         R.drawable.like,
                                         R.drawable.unlike,
                                         allTherapyItems.get(i).getLike(),
-                                        allTherapyItems.get(i).getDislike()
+                                        allTherapyItems.get(i).getDislike(),
+                                        allTherapyItems.get(i).getAlamatLengkap(),
+                                        R.drawable.baseline_location_on_24
                                 );
 
                                 // Tambah ke ArrayList

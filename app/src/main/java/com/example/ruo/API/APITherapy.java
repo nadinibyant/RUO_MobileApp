@@ -1,5 +1,7 @@
 package com.example.ruo.API;
 
+import androidx.annotation.IntegerRes;
+
 import com.example.ruo.pojo.Therapy.AddTherapyResponse;
 import com.example.ruo.pojo.Therapy.AllTherapyResponse;
 import com.example.ruo.pojo.Therapy.DelOtomatisResponse;
@@ -7,8 +9,10 @@ import com.example.ruo.pojo.Therapy.DeleteTherapyResponse;
 import com.example.ruo.pojo.Therapy.DetailTherapyResponse;
 import com.example.ruo.pojo.Therapy.DislikeResponse;
 import com.example.ruo.pojo.Therapy.EditTherapyResponse;
+import com.example.ruo.pojo.Therapy.FindLikeResponse;
 import com.example.ruo.pojo.Therapy.LikeResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyResponse;
+import com.example.ruo.pojo.peta.PetaResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -39,7 +43,8 @@ public interface APITherapy {
                                         @Part("lama_karir") RequestBody lama_karir,
                                         @Part("no_telp_psikolog") RequestBody no_telp_psikolog,
                                         @Part("medsos_psikolog") RequestBody medsos_psikolog,
-                                        @Part("spesialis_psikolog") RequestBody spesialis_psikolog);
+                                        @Part("spesialis_psikolog") RequestBody spesialis_psikolog,
+                                               @Part("alamat_lengkap") RequestBody alamat_lengkap);
     @GET("detailTherapy/{id_therapy}")
     Call<DetailTherapyResponse> getDetailTherapyResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy);
 
@@ -50,7 +55,8 @@ public interface APITherapy {
                                                 @Part("lama_karir") RequestBody lama_karir,
                                                 @Part("no_telp_psikolog") RequestBody no_telp_psikolog,
                                                 @Part("medsos_psikolog") RequestBody medsos_psikolog,
-                                                @Part("spesialis_psikolog") RequestBody spesialis_psikolog);
+                                                @Part("spesialis_psikolog") RequestBody spesialis_psikolog,
+                                                 @Part("alamat_lengkap") RequestBody alamat_lengkap);
 
     @Multipart
     @POST("editTherapy/{id_therapy}")
@@ -59,7 +65,8 @@ public interface APITherapy {
                                                  @Part("lama_karir") RequestBody lama_karir,
                                                  @Part("no_telp_psikolog") RequestBody no_telp_psikolog,
                                                  @Part("medsos_psikolog") RequestBody medsos_psikolog,
-                                                 @Part("spesialis_psikolog") RequestBody spesialis_psikolog);
+                                                 @Part("spesialis_psikolog") RequestBody spesialis_psikolog,
+                                                   @Part("alamat_lengkap") RequestBody alamat_lengkap);
 
     @DELETE("deleteTherapy/{id_therapy}")
     Call<DeleteTherapyResponse> getDeleteTherapyResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy);
@@ -71,8 +78,12 @@ public interface APITherapy {
     @POST("like/{id_therapy}/{id_user}")
     Call<LikeResponse> getLikeResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy, @Path("id_user") Integer id_user);
 
-    @DELETE("delOtomatic")
-    Call<DelOtomatisResponse> getDelOtomatisResp();
+
+    @GET("readyLike/{id_user}/{id_therapy}")
+    Call<FindLikeResponse> getFindLikeResp(@Header("Authorization") String token, @Path("id_user") Integer id_user, @Path("id_therapy")Integer id_therapy);
+
+    @GET("geocode/{id_therapy}")
+    Call<PetaResponse> getPetaResp(@Header("Authorization") String token, @Path("id_therapy") Integer id_therapy);
 
 
 }

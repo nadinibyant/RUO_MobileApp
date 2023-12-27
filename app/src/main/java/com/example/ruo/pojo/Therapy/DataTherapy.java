@@ -23,6 +23,9 @@ public class DataTherapy{
 	@SerializedName("spesialis_psikolog")
 	private String spesialisPsikolog;
 
+	@SerializedName("alamat_lengkap")
+	private String alamat_lengkap;
+
 	public String getMedsosPsikolog(){
 		return medsosPsikolog;
 	}
@@ -70,4 +73,8 @@ public class DataTherapy{
 	public String getSpesialisPsikolog(){
 		return spesialisPsikolog;
 	}
+	public String getAlamatLengkap(){
+		return alamat_lengkap;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.example.ruo.Therapy;
 
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,10 +23,13 @@ import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.peta.petaView;
 import com.example.ruo.pojo.Therapy.AllTherapyItem;
 import com.example.ruo.pojo.Therapy.DelOtomatisResponse;
 import com.example.ruo.pojo.Therapy.DislikeResponse;
+import com.example.ruo.pojo.Therapy.FindLikeResponse;
 import com.example.ruo.pojo.Therapy.LikeResponse;
+import com.example.ruo.pojo.peta.PetaResponse;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +70,7 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
 
     @Override
 //    nge set nilai per tag xml nya, dan ambil data dari MylisttherapyData
-    public void onBindViewHolder(@NonNull MyAdapterTherapy.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyAdapterTherapy.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String fotoPsikolog = therapyData[position].getFotoPsikolog();
 
         // Periksa apakah fotoPsikolog adalah URL langsung atau hanya nama file
@@ -84,6 +88,7 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
         holder.lama_kerja.setText(Integer.toString(therapyData[position].getLamaKarir()));
         holder.instagram.setText(therapyData[position].getMedsosPsikolog());
         holder.no_telp.setText(therapyData[position].getNoTelpPsikolog());
+
         holder.imgLike.setImageResource(therapyData[position].getImgLike());
         holder.imgLike.setTag(therapyData[position].getIdTherapy());
         holder.imgLike.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +105,14 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
                     call.enqueue(new Callback<LikeResponse>() {
                         @Override
                         public void onResponse(Call<LikeResponse> call, Response<LikeResponse> response) {
+                            Integer likeSummary = therapyData[position].getLike();
                             if (response.isSuccessful()){
-                                Log.d("TAG", "onResponse: berhasil");
+                                if (response.body().getMessage().contains("successfully liked")) {
+                                    likeSummary++;
+                                    holder.jumlahLike.setText(Integer.toString((likeSummary)));
+                                } else {
+                                    holder.jumlahLike.setText(Integer.toString((likeSummary)));
+                                }
                             } else {
                                 // JSON dari respons body
                                 JSONObject errorBody = null;
@@ -120,23 +131,25 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
                                     throw new RuntimeException(e);
                                 }
 
-                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                             }
 
                         }
 
                         @Override
                         public void onFailure(Call<LikeResponse> call, Throwable t) {
-                            Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(intent);
                 }
 
             }
         });
+
         holder.imgDislike.setImageResource(therapyData[position].getImgDislike());
         holder.imgDislike.setTag(therapyData[position].getIdTherapy());
         holder.imgDislike.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +168,18 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
                         public void onResponse(Call<DislikeResponse> call, Response<DislikeResponse> response) {
                             if (response.isSuccessful()){
                                 Log.d("TAG", "onResponse: berhasil");
+                                Integer dislikeSummary = therapyData[position].getDislike();
+                                if (response.body().getMessage().contains("Successfully added dislike")) {
+                                    dislikeSummary++;
+                                    holder.jumlahUnlike.setText(Integer.toString((dislikeSummary)));
+                                } else if (response.body().getMessage().contains("therapy data was deleted because dislikes exceeded 10")){
+                                    Toast.makeText(view.getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(view.getContext(), TherapyActivity1.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Tambahkan flag ini
+                                    view.getContext().startActivity(intent);
+                                } else {
+                                    holder.jumlahUnlike.setText(Integer.toString((dislikeSummary)));
+                                }
                             } else {
                                 // JSON dari respons body
                                 JSONObject errorBody = null;
@@ -184,39 +209,26 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
                         }
                     });
                 } else {
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(intent);
                 }
             }
         });
         holder.jumlahLike.setText(Integer.toString(therapyData[position].getLike()));
-        Integer teksLike = Integer.parseInt((String) holder.jumlahLike.getText());
-        if (teksLike > 10){
-            apiTherapy = APIClient.getClient().create(APITherapy.class);
-            SharedPreferences sharedPref = context.getSharedPreferences("env", Context.MODE_PRIVATE);
-            String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
-            Integer id_user = sharedPref.getInt("id_user", 0);
-
-            if (authToken != null){
-                Call<DelOtomatisResponse> call = apiTherapy.getDelOtomatisResp();
-                call.enqueue(new Callback<DelOtomatisResponse>() {
-                    @Override
-                    public void onResponse(Call<DelOtomatisResponse> call, Response<DelOtomatisResponse> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<DelOtomatisResponse> call, Throwable t) {
-
-                    }
-                });
-            } else {
-                Intent intent = new Intent(context, LoginActivity.class);
+        holder.jumlahUnlike.setText(Integer.toString(therapyData[position].getDislike()));
+        holder.imgAlamat.setImageResource(R.drawable.baseline_location_on_24);
+        holder.imgAlamat.setTag(therapyData[position].getIdTherapy());
+        holder.imgAlamat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int therapyId = (int) view.getTag();
+                Intent intent = new Intent(holder.itemView.getContext(), petaView.class);
+                intent.putExtra("therapyId", therapyId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
-
-        }
-        holder.jumlahUnlike.setText(Integer.toString(therapyData[position].getDislike()));
+        });
     }
 
     @Override
@@ -236,6 +248,8 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
         ImageView imgDislike;
         TextView jumlahLike;
         TextView jumlahUnlike;
+
+        ImageView imgAlamat;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPsikolog = itemView.findViewById(R.id.imgPsikolog);
@@ -248,6 +262,7 @@ public class MyAdapterTherapy extends RecyclerView.Adapter<MyAdapterTherapy.View
             imgDislike = itemView.findViewById(R.id.imgDislike);
             jumlahLike = itemView.findViewById(R.id.jumlah_like);
             jumlahUnlike = itemView.findViewById(R.id.jumlah_unlike);
+            imgAlamat = itemView.findViewById(R.id.imgAlamat);
         }
     }
 
