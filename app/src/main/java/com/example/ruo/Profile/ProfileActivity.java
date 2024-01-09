@@ -25,6 +25,7 @@ import com.example.ruo.R;
 import com.example.ruo.Therapy.MyAdapterTherapy;
 import com.example.ruo.Therapy.TherapyActivity1;
 import com.example.ruo.Therapy.TherapyActivityAdd;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Profile.DataMyMessageItem;
 import com.example.ruo.pojo.Profile.DataUserResponse;
 import com.example.ruo.pojo.Profile.MyMessageResponse;
@@ -92,14 +93,25 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        ImageView btnToAddUtas = findViewById(R.id.btnToAddUtas);
-        btnToAddUtas.setOnClickListener(new View.OnClickListener() {
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddUtasActivity.class);
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return false;
             }
         });
+
+//        ImageView btnToAddUtas = findViewById(R.id.btnToAddUtas);
+//        btnToAddUtas.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), AddUtasActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 //        getData();
 
@@ -257,6 +269,24 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent1);
         }
+
+        //INI UNTUK EDIT PROFILE
+//        ImageView btnEditProfile = findViewById(R.id.btnEditProfile);
+
+//        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Buat intent untuk membuka halaman EditProfileActivity
+//                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+//                // Tambahkan flag atau data tambahan jika diperlukan
+//                // intent.putExtra("key", "value");
+//                // Jalankan intent
+//                startActivity(intent);
+//            }
+//        });
+
+
+
 
 
 //

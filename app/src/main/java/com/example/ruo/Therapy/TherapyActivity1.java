@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;

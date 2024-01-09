@@ -111,17 +111,17 @@
         app:layout_constraintVertical_bias="0.776"
         tools:listitem="@layout/list_utas" />
 
-    <ImageView
-        android:id="@+id/btnToAddUtas"
-        android:layout_width="12dp"
-        android:layout_height="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.896"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488"
-        app:srcCompat="@drawable/addutas" />
+<!--    <ImageView-->
+<!--        android:id="@+id/btnToAddUtas"-->
+<!--        android:layout_width="12dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.896"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.488"-->
+<!--        app:srcCompat="@drawable/addutas" />-->
 
     <TextView
         android:id="@+id/textView10"
@@ -212,7 +212,7 @@
         app:srcCompat="@drawable/profil" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/btnEditProfile"
         android:layout_width="78dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="parent"

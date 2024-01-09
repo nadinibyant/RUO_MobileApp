@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,33 +23,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.ruo.API.APIChatTerry;
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
 import com.example.ruo.Home.HomeActivity1;
-import com.example.ruo.Home.HomeActivity2;
-import com.example.ruo.Home.HomeActivity3;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
 import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Therapy.AddTherapyResponse;
-import com.example.ruo.pojo.chatTerry.Answer1Response;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import android.provider.MediaStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;

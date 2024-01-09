@@ -1,5 +1,6 @@
 package com.example.ruo.Profile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,12 +17,16 @@ import android.widget.TextView;
 
 import com.example.ruo.API.APIProfile;
 import com.example.ruo.APIClient;
+import com.example.ruo.Home.HomeActivity1;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.Therapy.TherapyActivity1;
 import com.example.ruo.Therapy.TherapyActivity2;
 import com.example.ruo.Therapy.TherapyActivityAdd;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Profile.AddMyMessageResponse;
 import com.example.ruo.pojo.Therapy.AddTherapyResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,6 +48,54 @@ public class AddUtasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_utas);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        MenuItem therapyItem = bottomNavigationView.getMenu().findItem(R.id.item_therapy);
+
+
+        therapyItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), TherapyActivity1.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        MenuItem homeItem = bottomNavigationView.getMenu().findItem(R.id.item_home);
+        homeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity1.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return false;
+            }
+        });
+
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+        profileItem.setChecked(true);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
 
         ImageView btnBackAddUtas= findViewById(R.id.btnBackAddUtas);
         btnBackAddUtas.setOnClickListener(new View.OnClickListener() {

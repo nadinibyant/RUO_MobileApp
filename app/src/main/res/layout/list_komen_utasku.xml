@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:padding="20dp"
+    app:cardUseCompatPadding="true">
+
+    <TextView
+        android:id="@+id/komenutasku"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="7dp"
+        android:text="KOMEN UTAS NIH"
+        android:textSize="18sp"
+        />
+
+</androidx.cardview.widget.CardView>

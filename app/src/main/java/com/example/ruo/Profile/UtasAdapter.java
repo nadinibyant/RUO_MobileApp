@@ -10,11 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ruo.API.APIProfile;
@@ -46,10 +48,11 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
 //        this.utasModel = utasModel;
 //    }
 //    ==================
-    Context context;
+
     APIProfile apiProfile;
     public DataMyMessageItem[] MessageData;
 
+    Context context;
     public UtasAdapter(Context applicationContext, ArrayList<DataMyMessageItem> MessageData) {
         this.context = applicationContext;
         this.MessageData = MessageData.toArray(new DataMyMessageItem[0]);
@@ -63,8 +66,40 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
         return vh;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull UtasAdapter.ViewHolder holder, int position) {
+
+//        holder.cardView.setTag(MessageData[position].getIdMessage());
+//        holder.cardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int utasId = (int) view.getTag();
+//                Intent intent = new Intent(holder.itemView.getContext(), KomenUtasActivity.class);
+//                intent.putExtra("utasId", utasId);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+//            }
+//        });
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int adapterPosition = holder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    int utasId = MessageData[adapterPosition].getIdMessage();
+                    String utasMessage = MessageData[adapterPosition].getIsiMessage();
+
+                    Intent intent = new Intent(holder.itemView.getContext(), KomenUtasActivity.class);
+                    intent.putExtra("utasId", utasId);
+                    intent.putExtra("utasMessage", utasMessage);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+
         holder.editUtas.setTag(MessageData[position].getIdMessage());
         holder.editUtas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +111,7 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
+
 
         holder.hapusUtas.setTag(MessageData[position].getIdMessage());
         holder.hapusUtas.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +128,6 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
                         apiProfile = APIClient.getClient().create(APIProfile.class);
                         SharedPreferences sharedPref = context.getSharedPreferences("env", Context.MODE_PRIVATE);
                         String authToken = "Bearer " + sharedPref.getString("ACCESS_TOKEN_SECRET", null);
-
-
                         if (authToken != null) {
                             Call<DeleteMyMessageResponse> call = apiProfile.delMessageResp(authToken, utasId);
                             call.enqueue(new Callback<DeleteMyMessageResponse>() {
@@ -121,6 +155,8 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
             }
         });
         holder.iniutas.setText(MessageData[position].getIsiMessage());
+
+
     }
 
     @Override
@@ -131,11 +167,13 @@ public class UtasAdapter extends RecyclerView.Adapter<UtasAdapter.ViewHolder> {
         ImageView editUtas;
         ImageView hapusUtas;
         TextView iniutas;
+        CardView cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iniutas = itemView.findViewById(R.id.utasku);
             editUtas= itemView.findViewById(R.id.editUtas);
             hapusUtas = itemView.findViewById(R.id.inikitahapusUtas);
+            cardView = itemView.findViewById(R.id.cardutas);
         }
     }
 }

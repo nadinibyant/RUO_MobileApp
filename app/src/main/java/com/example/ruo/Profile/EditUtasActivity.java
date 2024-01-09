@@ -1,5 +1,6 @@
 package com.example.ruo.Profile;
 
+import androidx.annotation.NonNull;
 import  androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,12 +21,15 @@ import android.widget.ImageView;
 import com.example.ruo.API.APIProfile;
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
+import com.example.ruo.Home.HomeActivity1;
 import com.example.ruo.Home.HomeActivity2;
 import com.example.ruo.Home.HomeActivity3;
 import com.example.ruo.LoginActivity;
 import com.example.ruo.R;
+import com.example.ruo.Therapy.TherapyActivity1;
 import com.example.ruo.Therapy.TherapyActivity2;
 import com.example.ruo.Therapy.TherapyActivityEdit;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Profile.DetailMyMessageResponse;
 import com.example.ruo.pojo.Profile.DetailMyMessage;
 import com.example.ruo.pojo.Profile.MyMessageResponse;
@@ -32,6 +37,7 @@ import com.example.ruo.pojo.Profile.EditMyMessageResponse;
 import com.example.ruo.pojo.Therapy.DetailTherapyResponse;
 import com.example.ruo.pojo.Therapy.EditTherapyResponse;
 import com.example.ruo.pojo.chatTerry.Answer1Response;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -55,6 +61,55 @@ public class EditUtasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_utas);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        MenuItem therapyItem = bottomNavigationView.getMenu().findItem(R.id.item_therapy);
+
+
+        therapyItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), TherapyActivity1.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        MenuItem homeItem = bottomNavigationView.getMenu().findItem(R.id.item_home);
+        homeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity1.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return false;
+            }
+        });
+
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+        profileItem.setChecked(true);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
 
         ImageView btnBackEditUtas= findViewById(R.id.btnBackEditUtas);
         btnBackEditUtas.setOnClickListener(new View.OnClickListener() {

@@ -23,7 +23,6 @@ import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
 import com.example.ruo.Therapy.TherapyActivity1;
 import com.example.ruo.message.MessageActivity;
-import com.example.ruo.pojo.chatTerry.Answer1Response;
 import com.example.ruo.pojo.chatTerry.Answer2Response;
 import com.example.ruo.pojo.chatTerry.QuestionItem;
 import com.example.ruo.pojo.chatTerry.QuestionResponse;

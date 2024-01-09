@@ -22,8 +22,6 @@ import com.example.ruo.LoginActivity;
 import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
 import com.example.ruo.message.MessageActivity;
-import com.example.ruo.pojo.Therapy.AllTherapyItem;
-import com.example.ruo.pojo.Therapy.AllTherapyResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyItem;
 import com.example.ruo.pojo.Therapy.MyTherapyResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

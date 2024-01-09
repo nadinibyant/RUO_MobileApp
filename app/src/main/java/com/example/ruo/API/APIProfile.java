@@ -1,6 +1,7 @@
 package com.example.ruo.API;
 
 import com.example.ruo.pojo.Profile.AddMyMessageResponse;
+import com.example.ruo.pojo.Profile.CommentMessageResponse;
 import com.example.ruo.pojo.Profile.DataUserResponse;
 import com.example.ruo.pojo.Profile.DeleteMyMessageResponse;
 import com.example.ruo.pojo.Profile.DetailMyMessageResponse;
@@ -62,5 +63,8 @@ public interface APIProfile {
 //    //add post
 //    @POST("addMessage/{id_user}")
 //    Call<AddMessageResponse> addMessageResp (@Header("Authorization") String token, @Path("id_user") int id_user);
+
+    @GET ("commentMessage/{id_message}")
+    Call<CommentMessageResponse> getCommentMessageResp (@Header("Authorization") String token, @Path("id_message") int id_message);
 
 }

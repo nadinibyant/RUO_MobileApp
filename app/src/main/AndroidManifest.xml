@@ -22,12 +22,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Profile.EditProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Profile.ProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".Profile.KomenUtasActivity"
             android:exported="false" />
         <activity
@@ -35,6 +29,15 @@
             android:exported="false" />
         <activity
             android:name=".Profile.AddUtasActivity"
+            android:exported="false" />
+        <!--        <activity-->
+        <!--            android:name=".Profile.AddUtasActivity$EditProfileActivity"-->
+        <!--            android:exported="false" />-->
+        <activity
+            android:name=".Profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".message.DetailContentMessageActivity"
