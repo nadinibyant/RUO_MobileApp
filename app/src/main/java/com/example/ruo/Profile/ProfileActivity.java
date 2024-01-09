@@ -137,8 +137,8 @@ public class ProfileActivity extends AppCompatActivity {
                             Picasso.get().load(photousernih).into(photouser);
                         } else {
                             // Jika fotoPsikolog adalah nama file,  URL dari server
-                            String baseUrl = "http://10.0.2.2:3000";
-                            String photoUrl = baseUrl + "/fotoProfile/" + photousernih;
+                            String baseUrl = "https://2nhj8ts5-3000.use.devtunnels.ms/";
+                            String photoUrl = baseUrl + "fotoProfile/" + photousernih;
                             Log.d("TAG url foto", "onBindViewHolder: " + photoUrl);
                             Picasso.get().load(photoUrl).fit().into(photouser);
                         }

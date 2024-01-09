@@ -19,7 +19,9 @@ import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
 import com.example.ruo.Home.HomeActivity1;
 import com.example.ruo.LoginActivity;
+import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Therapy.AllTherapyItem;
 import com.example.ruo.pojo.Therapy.AllTherapyResponse;
 import com.example.ruo.pojo.Therapy.MyTherapyItem;
@@ -70,6 +72,29 @@ public class TherapyActivity2 extends AppCompatActivity {
                 return false;
             }
         });
+
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
 
         RecyclerView recyclerView = findViewById(R.id.rv_listTherapyIndividu);
         MyAdapterIndividuTherapy myAdapterIndividuTherapy;

@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.ruo.LoginActivity;
+import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
 import com.example.ruo.Therapy.TherapyActivity1;
+import com.example.ruo.message.MessageActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity1 extends AppCompatActivity {
@@ -57,14 +59,27 @@ public class HomeActivity1 extends AppCompatActivity {
                 }
             });
 
-//        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
-//        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-//                Intent intent = new Intent(getApplicationContext(), )
-//                return false;
-//            }
-//        })
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+            profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                    return true;
+                }
+            });
 
             ImageView btnNext = findViewById(R.id.btn_next);
             btnNext.setOnClickListener(new View.OnClickListener() {

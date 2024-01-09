@@ -19,8 +19,10 @@ import android.widget.TextView;
 import com.example.ruo.API.APIChatTerry;
 import com.example.ruo.APIClient;
 import com.example.ruo.LoginActivity;
+import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
 import com.example.ruo.Therapy.TherapyActivity1;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.chatTerry.Answer1Response;
 import com.example.ruo.pojo.chatTerry.Answer2Response;
 import com.example.ruo.pojo.chatTerry.QuestionItem;
@@ -72,6 +74,29 @@ public class HomeActivity3 extends AppCompatActivity {
                 return true;
             }
         });
+
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
 
         Intent intent = getIntent();
         String answer1 = intent.getStringExtra("answer1");

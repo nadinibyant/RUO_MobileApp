@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,12 +27,16 @@ import android.widget.Toast;
 import com.example.ruo.API.APIChatTerry;
 import com.example.ruo.API.APITherapy;
 import com.example.ruo.APIClient;
+import com.example.ruo.Home.HomeActivity1;
 import com.example.ruo.Home.HomeActivity2;
 import com.example.ruo.Home.HomeActivity3;
 import com.example.ruo.LoginActivity;
+import com.example.ruo.Profile.ProfileActivity;
 import com.example.ruo.R;
+import com.example.ruo.message.MessageActivity;
 import com.example.ruo.pojo.Therapy.AddTherapyResponse;
 import com.example.ruo.pojo.chatTerry.Answer1Response;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -67,6 +72,53 @@ public class TherapyActivityAdd extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_therapy_add);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        MenuItem therapyItem = bottomNavigationView.getMenu().findItem(R.id.item_therapy);
+        therapyItem.setChecked(true);
+
+        therapyItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), TherapyActivity1.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        MenuItem homeItem = bottomNavigationView.getMenu().findItem(R.id.item_home);
+        homeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity1.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return false;
+            }
+        });
+
+        MenuItem messageItem = bottomNavigationView.getMenu().findItem(R.id.item_message);
+        messageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
+
+        MenuItem profileItem = bottomNavigationView.getMenu().findItem(R.id.item_profile);
+        profileItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                return true;
+            }
+        });
 
 
         ImageView btnBackAddTherapy = findViewById(R.id.btnBackTherapyAdd);
