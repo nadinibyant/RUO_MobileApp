@@ -1,0 +1,21 @@
+<!-- rounded_outline_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background with rounded corners -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/backgroundApp" /> <!-- Background color -->
+            <corners android:radius="2dp" /> <!-- Adjust corner radius as needed -->
+        </shape>
+    </item>
+
+    <!-- Outline with stroke -->
+    <item android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- Transparent background -->
+            <stroke
+                android:width="2dp"
+            android:color="@color/white" /> <!-- Outline color -->
+            <corners android:radius="2dp" /> <!-- Match corner radius with the background -->
+        </shape>
+    </item>
+</layer-list>
